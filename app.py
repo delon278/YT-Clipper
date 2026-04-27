@@ -15,6 +15,8 @@ CLIPS_DIR = Path("/tmp/YTClipper/clips")
 DOWNLOADS_DIR.mkdir(parents=True, exist_ok=True)
 CLIPS_DIR.mkdir(parents=True, exist_ok=True)
 
+COOKIES_FILE = Path("/app/cookies.txt")
+
 progress_store = {}
 
 
@@ -35,6 +37,7 @@ def search():
         'no_warnings': True,
         'extract_flat': True,
         'default_search': 'ytsearch10',
+        **({"cookiefile": str(COOKIES_FILE)} if COOKIES_FILE.exists() else {}),
     }
 
     try:
@@ -67,6 +70,7 @@ def get_info():
     ydl_opts = {
         'quiet': True,
         'no_warnings': True,
+        **({"cookiefile": str(COOKIES_FILE)} if COOKIES_FILE.exists() else {}),
     }
 
     try:
@@ -116,6 +120,7 @@ def download():
             'no_warnings': True,
             'progress_hooks': [progress_hook],
             'merge_output_format': 'mp4',
+            **({"cookiefile": str(COOKIES_FILE)} if COOKIES_FILE.exists() else {}),
         }
 
         try:
@@ -148,7 +153,6 @@ def clip():
     clip_name = data.get('clip_name', f'clip_{int(time.time())}')
 
     if not filename or not os.path.exists(filename):
-        # try to find by video_id
         video_id = data.get('video_id', '')
         candidates = list(DOWNLOADS_DIR.glob(f"{video_id}*.mp4"))
         if candidates:
