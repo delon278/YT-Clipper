@@ -114,7 +114,7 @@ def download():
                 progress_store[task_id]['filename'] = d.get('filename', '')
 
         ydl_opts = {
-            'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
+            'format': 'bestvideo+bestaudio/bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
             'outtmpl': output_template,
             'quiet': True,
             'no_warnings': True,
